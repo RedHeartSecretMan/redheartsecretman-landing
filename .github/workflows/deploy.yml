@@ -1,0 +1,52 @@
+name: Deploy to GitHub Pages
+run-name: Publish landing (${{ github.event_name }}) - ${{ github.sha }}
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Test redirects
+        run: node --test tests/redirect.test.mjs
+      - name: Prepare static site
+        # The custom domain remains in Pages settings, not the artifact.
+        run: |
+          mkdir -p _site/docs
+          cp index.html styles.css redirect.js favicon.svg _site/
+          cp docs/preview.jpg _site/docs/
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy site
+        id: deployment
+        uses: actions/deploy-pages@v4
