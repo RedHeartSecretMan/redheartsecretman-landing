@@ -24,12 +24,13 @@ jobs:
           node-version: 24
           package-manager-cache: false
       - name: Test redirects
-        run: node --test tests/redirect.test.mjs
+        run: node --test tests/*.test.mjs
       - name: Prepare static site
         # The custom domain remains in Pages settings, not the artifact.
         run: |
           mkdir -p _site/docs
-          cp index.html styles.css redirect.js favicon.svg _site/
+          cp index.html styles.css redirect.js crt-display.mjs favicon.svg _site/
+          cp -R assets vendor _site/
           cp docs/preview.jpg _site/docs/
       - name: Upload site
         uses: actions/upload-pages-artifact@v4

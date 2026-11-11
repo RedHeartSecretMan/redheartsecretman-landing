@@ -1,42 +1,69 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { statSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const script = readFileSync(new URL('../redirect.js', import.meta.url), 'utf8');
-const target = 'https://me.redheartsecretman.top/';
-const resumeHref = html.match(/id="resume-link"[^>]*href="([^"]+)"/)[1];
 
-for (const [name, search, hash] of [
-  ['plain entry', '', ''],
-  ['query and anchor', '?utm_source=github&tag=rust&tag=cuda', '#works'],
-  ['encoded characters', '?name=%E7%8E%8B%E6%98%8A&q=a%2Bb', '#%E7%AE%80%E5%8E%86'],
-  ['untrusted target parameter', '?redirect=https%3A%2F%2Fexample.org%2F&next=//example.org', '#works'],
-]) {
-  test(name, () => {
-    const link = { href: resumeHref };
-    const replaced = [];
-    runInNewContext(script, {
-      URL,
-      document: { getElementById: () => link },
-      window: { location: { search, hash, replace: (url) => replaced.push(url) } },
-    });
-    assert.deepEqual(replaced, [target + search + hash]);
-    assert.equal(link.href, target + search + hash);
-  });
-}
-
-test('the no-script redirect is the only meta refresh', () => {
-  const noScript = html.match(/<noscript>([\s\S]*?)<\/noscript>/)[1];
-  assert.match(noScript, /http-equiv="refresh"/);
-  assert.ok(noScript.includes('content="0; url=' + target + '"'));
-  assert.equal((html.match(/http-equiv="refresh"/g) || []).length, 1);
+test('homepage keeps the resume as an explicit destination', () => {
+  assert.match(html, /href="https:\/\/me\.redheartsecretman\.top\//);
+  assert.match(html, /id="work"/);
+  assert.match(html, /id="about"/);
+  assert.match(html, /id="contact"/);
+  assert.match(html, /id="stage-canvas"/);
+  assert.match(html, /redirect\.js/);
+  assert.ok(readFileSync(new URL('../vendor/three.module.js', import.meta.url)).byteLength > 100000);
 });
 
-test('entry link and canonical use the stable resume domain', () => {
-  assert.equal(resumeHref, target);
-  assert.ok(html.includes('<link rel="canonical" href="' + target + '">'));
-  assert.ok(html.includes('property="og:url" content="' + target + '"'));
+test('selected work exposes a gesture-friendly carousel', () => {
+  assert.match(html, /data-carousel/);
+  assert.match(html, />WORK</);
+  assert.doesNotMatch(html, /data-prev|data-next/);
+  assert.match(html, /aria-roledescription="carousel"/);
+  assert.match(script, /pointerdown/);
+  assert.match(script, /pointercancel/);
+  assert.match(script, /setPointerCapture/);
+  assert.match(script, /deltaX/);
+  assert.match(script, /Math\.abs\(offset\) > 42/);
+  assert.match(script, /targetScroll/);
+  assert.match(script, /import\('\.\/vendor\/three\.module\.js(?:\?[^']*)?'\)/);
+  assert.match(script, /WebGLRenderer/);
+  assert.match(script, /BoxGeometry/);
+  assert.match(script, /MeshStandardMaterial/);
+  assert.match(script, /PointLight/);
+});
+
+test('homepage exposes a bilingual switch and copy tables', () => {
+  assert.match(html, /data-lang-toggle/);
+  assert.match(html, /data-copy="nav\.work"/);
+  assert.match(script, /landing-language/);
+  assert.match(script, /切换中文/);
+  assert.match(script, /Switch to English/);
+});
+
+test('3D stage includes a licensed model loading path', () => {
+  assert.match(script, /GLTFLoader/);
+  assert.match(script, /television_02_1k\.gltf/);
+  assert.match(script, /vendor\/loaders\/GLTFLoader\.js/);
+  assert.ok(statSync(new URL('../assets/television_02/television_02_1k.gltf', import.meta.url)).size > 1000);
+  assert.ok(statSync(new URL('../assets/television_02/television_02.bin', import.meta.url)).size > 10000);
+  assert.ok(statSync(new URL('../vendor/loaders/GLTFLoader.js', import.meta.url)).size > 100000);
+});
+
+test('enhancement script does not navigate visitors away from the homepage', () => {
+  const replaced = [];
+  runInNewContext(script, {
+    document: { body: { dataset: {} }, documentElement: { style: { setProperty() {} } }, querySelector: () => null, querySelectorAll: () => [] },
+    window: { matchMedia: () => ({ matches: true }), addEventListener: () => {}, location: { replace: (url) => replaced.push(url) } },
+    IntersectionObserver: class { observe() {} },
+  });
+  assert.deepEqual(replaced, []);
+});
+
+test('homepage metadata points to the landing domain', () => {
+  assert.match(html, /canonical" href="https:\/\/redheartsecretman\.top\//);
+  assert.match(html, /property="og:url" content="https:\/\/redheartsecretman\.top\//);
   assert.equal(readFileSync(new URL('../CNAME', import.meta.url), 'utf8').trim(), 'redheartsecretman.top');
 });
