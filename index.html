@@ -1,53 +1,100 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wang Hao</title>
-  <meta name="description" content="王昊的个人网站。了解我的经历，以及推理系统、Agent Skills 与开源工具。">
-  <meta name="robots" content="noindex,follow">
-  <meta name="theme-color" content="#f4f1e9">
-  <link rel="canonical" href="https://me.redheartsecretman.top/">
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=2">
-  <link rel="stylesheet" href="./styles.css">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Wang Hao">
-  <meta property="og:description" content="AI 系统工程师 · 推理系统、Agent Skills 与开源工具">
-  <meta property="og:url" content="https://me.redheartsecretman.top/">
-  <noscript>
-    <meta http-equiv="refresh" content="0; url=https://me.redheartsecretman.top/">
-  </noscript>
-</head>
-<body>
-  <header class="masthead">
-    <div class="identity">
-      <span>RedHeartSecretMan</span>
-    </div>
-    <span class="edition" lang="en">PERSONAL WEBSITE</span>
-  </header>
-  <main>
-    <p class="eyebrow" lang="en">AI SYSTEMS ENGINEER</p>
-    <h1 lang="en">Wang Hao<span class="accent">.</span></h1>
-    <p class="name">王昊</p>
-    <p class="intro">从一个问题，到一个可以运行的答案。</p>
-    <ul class="focus-list" aria-label="关注方向">
-      <li>Rust + CUDA</li>
-      <li>Agent Skills</li>
-      <li>开源工具</li>
-    </ul>
-    <section class="destination" aria-labelledby="destination-title">
-      <h2 id="destination-title">经历与作品</h2>
-      <p class="destination-description">在 3D 简历中，了解我的经历、项目与技术实践。</p>
-      <nav aria-label="个人链接">
-        <a id="resume-link" class="primary" href="https://me.redheartsecretman.top/">查看简历 <span aria-hidden="true">↗</span></a>
-        <a class="secondary" href="https://github.com/RedHeartSecretMan" aria-label="GitHub 个人主页">GitHub <span aria-hidden="true">↗</span></a>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Wang Hao — AI Application Test Engineer</title>
+    <meta name="description" content="王昊的个人主页：模型应用测试开发、推理系统、视觉算法与可复现的 AI 工具。">
+    <meta name="theme-color" content="#050505">
+    <link rel="canonical" href="https://redheartsecretman.top/">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=4">
+    <link rel="stylesheet" href="./styles.css?v=work-layout-1">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Wang Hao — AI Application Test Engineer">
+    <meta property="og:description" content="把模型能力变成可测试、可解释、可交付的系统。">
+    <meta property="og:url" content="https://redheartsecretman.top/">
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="ambient" aria-hidden="true"><canvas id="stage-canvas"></canvas></div>
+
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-name">WANG HAO</span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="#home" data-nav="home" data-copy="nav.home">Home</a>
+        <a href="#work" data-nav="work" data-copy="nav.work">Work</a>
+        <a href="#about" data-nav="about" data-copy="nav.about">About</a>
+        <a href="#contact" data-nav="contact" data-copy="nav.contact">Contact</a>
       </nav>
-    </section>
-  </main>
-  <footer>
-    <span>redheartsecretman.top</span>
-    <span lang="en">WHAT → WHY → HOW</span>
-  </footer>
-  <script src="./redirect.js"></script>
-</body>
+      <div class="header-actions">
+        <button type="button" class="lang-toggle" data-lang-toggle aria-label="切换语言">中文</button>
+        <a class="resume-cta" href="https://me.redheartsecretman.top/" target="_blank" rel="noopener noreferrer"><span data-copy="resume">Résumé</span></a>
+      </div>
+    </header>
+
+    <main id="scroll-container">
+      <section id="home" class="hero section" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title" data-copy-html="hero.title">Make<br><em>intelligence</em><br>usable<span class="period">.</span></h1>
+          <p class="hero-note" data-copy-html="hero.note">Scroll to inspect my work</p>
+        </div>
+        <div class="hero-scene" aria-hidden="true">
+          <div class="fog fog-one"></div><div class="fog fog-two"></div>
+        </div>
+      </section>
+
+      <section id="work" class="work section" aria-labelledby="work-title">
+        <div class="section-lead">
+          <p class="section-kicker" data-copy="work.kicker">WORK</p>
+          <h2 id="work-title" data-copy-html="work.title">Things I've<br><em>built.</em></h2>
+          <p class="section-description" data-copy="work.description">精选开源项目，涵盖模型推理、Agent 协作、数据研究与开发者工具。</p>
+        </div>
+        <div class="project-carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="精选项目" tabindex="0">
+          <div class="project-stage" aria-hidden="true">
+            <div class="project-glow"></div>
+          </div>
+          <article class="project-copy" aria-live="polite">
+            <p class="project-meta"><span data-project-number-text>01</span> <span data-project-type>LLM INFERENCE</span></p>
+            <h3 data-project-title>vllm-oxide</h3>
+            <p data-project-description>基于 Rust、Candle 与自定义 CUDA 算子的开源大模型推理引擎，支持连续批处理和 KV Cache。</p>
+            <div class="project-tags" data-project-tags><span>Rust</span><span>CUDA</span><span>KV Cache</span></div>
+            <a class="project-link" data-project-link href="https://github.com/RedHeartSecretMan/vllm-oxide" target="_blank" rel="noopener noreferrer">View project</a>
+            <p class="project-hint" data-copy="work.hint">拖动或使用方向键切换项目</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="about section" aria-labelledby="about-title">
+        <div class="about-title-block">
+          <h2 id="about-title" data-copy-html="about.title">Making digital work<br><em>more inspectable.</em></h2>
+        </div>
+        <div class="about-copy">
+          <p data-copy="about.p1">我是王昊，一名 AI 应用测试工程师。我在模型、基础设施和使用者之间工作，让复杂的 AI 系统能被运行、被解释，也能在下一次迭代中被重新验证。</p>
+          <p data-copy="about.p2">过去一年，我在天数智芯从事模型应用测试开发，关注 vLLM、CUDA、模型运行时和异构加速环境。我的工作从安装部署开始，经过依赖兼容、结果正确性、性能回归和问题复现，最后留下可审查的测试证据。</p>
+          <p data-copy="about.p3">此前，我参与智慧交通项目的算法研发与产品化，完成车牌结构化识别和交通垂域视觉语言模型的落地；更早在光子芯片研究院研究散射成像与像差补偿，参与发表 8 篇论文。</p>
+          <p data-copy-html="about.p4">我喜欢把一个模糊的问题拆成清晰的 What、Why 和 How，再把答案写进代码、测试和文档里。欢迎从 <a href="https://me.redheartsecretman.top/" target="_blank" rel="noopener noreferrer">完整简历</a> 了解我的经历。</p>
+        </div>
+      </section>
+
+      <section id="contact" class="contact section" aria-labelledby="contact-title">
+        <div class="contact-lead">
+          <p class="section-kicker" data-copy="contact.kicker">CONTACT</p>
+          <h2 id="contact-title" data-copy-html="contact.title">Have a problem<br><em>worth solving?</em></h2>
+          <p data-copy="contact.description">如果你正在构建 AI 产品、推理平台或开发者工具，欢迎和我聊聊。</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-item"><span class="contact-label" data-copy="contact.emailLabel">General enquiries</span><a href="mailto:wh18307094479@gmail.com">wh18307094479@gmail.com</a></div>
+          <div class="contact-item"><span class="contact-label" data-copy="contact.resumeLabel">Résumé</span><a href="https://me.redheartsecretman.top/" target="_blank" rel="noopener noreferrer">me.redheartsecretman.top</a></div>
+          <div class="contact-item"><span class="contact-label" data-copy="contact.socialLabel">Social</span><a href="https://github.com/RedHeartSecretMan" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+          <div class="contact-item"><span class="contact-label" data-copy="contact.locationLabel">Based in</span><span data-copy="contact.location">Shanghai, China</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><span>© <span data-year>2026</span> WANG HAO</span><span>REDHEARTSECRETMAN.TOP</span><a href="#home" data-copy="footer.top">Back to top</a></footer>
+    <script src="./redirect.js?v=work-layout-1"></script>
+  </body>
 </html>
