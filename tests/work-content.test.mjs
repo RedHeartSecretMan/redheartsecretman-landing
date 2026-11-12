@@ -6,6 +6,9 @@ import { runInNewContext } from 'node:vm';
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const script = readFileSync(new URL('../redirect.js', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+const favicon = readFileSync(new URL('../favicon.svg', import.meta.url), 'utf8');
+const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+const workflow = readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
 
 function startCarousel() {
   const elements = new Map();
@@ -82,4 +85,13 @@ test('visual hierarchy uses interaction cues instead of static divider rules', (
   assert.match(styles, /\.contact-item, \.site-footer \{ border-top: 0;/);
   assert.match(script, /toneMapping = THREE\.ACESFilmicToneMapping/);
   assert.match(script, /const atmosphere = new THREE\.Group\(\)/);
+});
+
+test('brand and documented assets match the current homepage', () => {
+  assert.match(html, /favicon\.svg\?v=5/);
+  assert.match(favicon, /#f0d7bd/);
+  assert.match(favicon, /#e9957d/);
+  assert.match(favicon, /#9789e6/);
+  assert.match(readme, /!\[主页首屏预览\]\(docs\/preview\.jpg\)/);
+  assert.doesNotMatch(workflow, /three\.core\.js/);
 });
